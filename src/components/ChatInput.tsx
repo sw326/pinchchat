@@ -270,7 +270,35 @@ export function ChatInput({ onSend, onNewSession, onAbort, isGenerating, disable
           <SlashCommandMenu
             query={text}
             visible={showSlash}
-            onSelect={(cmd) => { setText(cmd); setShowSlash(shouldShowSlashMenu(cmd)); textareaRef.current?.focus(); }}
+            onSelect={(cmd) => {
+              // Commands without args (no trailing space) should submit immediately
+              if (!cmd.endsWith(' ')) {
+                setText(cmd);
+                setShowSlash(false);
+                // Submit directly — need to call onSend/onNewSession inline since setState is async
+                if ((cmd === '/new') && onNewSession) {
+                  void onNewSession();
+                  setText('');
+                  setFiles([]);
+                  onCancelReply?.();
+                  if (sessionKey) draftsRef.current.delete(sessionKey);
+                } else {
+                  // For other no-arg commands (e.g. /status, /help), send as text
+                  const finalText = replyTo?.preview
+                    ? `> ${replyTo.preview.split('\n')[0].slice(0, 80)}\n\n${cmd}`
+                    : cmd;
+                  onSend(finalText);
+                  setText('');
+                  setFiles([]);
+                  onCancelReply?.();
+                  if (sessionKey) draftsRef.current.delete(sessionKey);
+                }
+              } else {
+                setText(cmd);
+                setShowSlash(shouldShowSlashMenu(cmd));
+                textareaRef.current?.focus();
+              }
+            }}
             onClose={() => setShowSlash(false)}
           />
           {/* Reply context banner */}
