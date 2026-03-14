@@ -1,0 +1,7 @@
+{
+  "build": {
+    "env": {
+      "VITE_CLIENT_ID": "openclaw-control-ui"
+    }
+  }
+}
