@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Send, Square, Paperclip, X, FileText, Eye, EyeOff, Reply } from 'lucide-react';
 import { useT } from '../hooks/useLocale';
 import { useSendShortcut } from '../hooks/useSendShortcut';
@@ -95,6 +95,10 @@ function toQuotedContext(text: string): string {
 export function ChatInput({ onSend, onNewSession, onAbort, isGenerating, disabled, sessionKey, replyTo, onCancelReply, insertRequest }: Props) {
   const t = useT();
   const { sendOnEnter, toggle: toggleSendShortcut } = useSendShortcut();
+  // Mobile detection: touch devices use Send button; Enter always inserts newline
+  const isMobile = useMemo(() =>
+    window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0,
+  []);
   const [text, setText] = useState('');
   const [files, setFiles] = useState<FileAttachment[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -232,6 +236,8 @@ export function ChatInput({ onSend, onNewSession, onAbort, isGenerating, disable
       // Check both React state and native event property — on some browsers
       // compositionend fires before keydown, making isComposing stale
       if (isComposing || e.nativeEvent.isComposing || e.keyCode === 229) return;
+      // Mobile: Enter always creates newline — use Send button to submit
+      if (isMobile) return;
       if (sendOnEnter) {
         if (e.shiftKey) {
           // Shift+Enter: explicitly insert newline at cursor position
