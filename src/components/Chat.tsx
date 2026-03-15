@@ -285,7 +285,7 @@ export function Chat({ messages, isGenerating, isLoadingHistory, status, session
     <div className="flex-1 flex flex-col min-h-0 relative">
       <MessageSearch open={searchOpen} onClose={closeSearch} onSearch={handleSearch} matchCount={searchMatches.length} />
       <div ref={scrollContainerRef} className="flex-1 overflow-y-auto overflow-x-hidden relative" role="log" aria-label={t('chat.messages')} aria-live="polite">
-        <div className="max-w-4xl mx-auto py-4 w-full">
+        <div className="max-w-6xl mx-auto py-4 w-full">
           {messages.length === 0 && isLoadingHistory && (
             <div className="flex flex-col items-center justify-center h-[60vh] text-pc-text-muted">
               <Loader2 className="h-8 w-8 text-pc-accent-light/60 animate-spin mb-4" />
