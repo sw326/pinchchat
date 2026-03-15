@@ -233,8 +233,24 @@ export function ChatInput({ onSend, onNewSession, onAbort, isGenerating, disable
       // compositionend fires before keydown, making isComposing stale
       if (isComposing || e.nativeEvent.isComposing || e.keyCode === 229) return;
       if (sendOnEnter) {
-        // Enter sends, Shift+Enter for newline
-        if (!e.shiftKey && !e.ctrlKey && !e.metaKey) {
+        if (e.shiftKey) {
+          // Shift+Enter: explicitly insert newline at cursor position
+          e.preventDefault();
+          const el = e.currentTarget as HTMLTextAreaElement;
+          const start = el.selectionStart ?? text.length;
+          const end = el.selectionEnd ?? text.length;
+          const newText = text.slice(0, start) + '\n' + text.slice(end);
+          setText(newText);
+          requestAnimationFrame(() => {
+            if (textareaRef.current) {
+              textareaRef.current.selectionStart = start + 1;
+              textareaRef.current.selectionEnd = start + 1;
+            }
+          });
+          return;
+        }
+        // Enter sends
+        if (!e.ctrlKey && !e.metaKey) {
           e.preventDefault();
           handleSubmit();
         }
