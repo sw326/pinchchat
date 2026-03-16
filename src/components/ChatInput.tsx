@@ -305,7 +305,8 @@ export function ChatInput({ onSend, onNewSession, onAbort, isGenerating, disable
 
   return (
     <div
-      className="border-t border-pc-border bg-[var(--pc-bg-input)]/60 backdrop-blur-xl p-4 print-hide"
+      className="border-t border-pc-border bg-[var(--pc-bg-input)]/60 backdrop-blur-xl p-4 print-hide sticky bottom-0 z-30"
+      style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
       role="form"
       aria-label={t('chat.inputLabel')}
       onDragOver={handleDragOver}
