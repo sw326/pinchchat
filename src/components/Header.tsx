@@ -58,7 +58,7 @@ export function Header({ status, sessionKey, onToggleSidebar, activeSessionData,
 
   return (
     <>
-    <header className="h-14 border-b border-pc-border bg-[var(--pc-bg-surface)]/90 backdrop-blur-xl flex items-center px-4 gap-3 shrink-0" role="banner">
+    <header className="h-14 border-b border-pc-border bg-[var(--pc-bg-surface)]/90 backdrop-blur-xl flex items-center px-4 gap-3 shrink-0 sticky top-0 z-40" role="banner">
       <button onClick={onToggleSidebar} aria-label={t('header.toggleSidebar')} className="lg:hidden p-2 rounded-2xl hover:bg-[var(--pc-hover)] text-pc-text-secondary transition-colors">
         <Menu size={20} />
       </button>
