@@ -490,9 +490,9 @@ export const ChatMessageComponent = memo(function ChatMessageComponent({ message
   }
 
   return (
-    <div className={`animate-fade-in flex gap-3 px-4 ${isFirstInGroup ? 'py-2' : 'py-0.5'} ${isUser ? 'flex-row-reverse' : ''} ${message.sendStatus === 'sending' ? 'opacity-70' : ''} ${message.sendStatus === 'error' ? 'opacity-60' : ''}`}>
-      {/* Avatar — hidden for grouped messages, but keep width for alignment */}
-      <div className={`shrink-0 mt-1 flex h-9 w-9 items-center justify-center rounded-2xl overflow-hidden ${isFirstInGroup ? 'border border-pc-border bg-pc-elevated/40' : ''}`}>
+    <div className={`animate-fade-in flex gap-0 sm:gap-3 px-4 ${isFirstInGroup ? 'py-2' : 'py-0.5'} ${isUser ? 'flex-row-reverse' : ''} ${message.sendStatus === 'sending' ? 'opacity-70' : ''} ${message.sendStatus === 'error' ? 'opacity-60' : ''}`}>
+      {/* Avatar — hidden on mobile, shown on desktop */}
+      <div className={`hidden sm:flex shrink-0 mt-1 h-9 w-9 items-center justify-center rounded-2xl overflow-hidden ${isFirstInGroup ? 'border border-pc-border bg-pc-elevated/40' : ''}`}>
         {isFirstInGroup ? (
           isUser
             ? <User className="h-4 w-4 text-pc-accent-light" />
@@ -502,8 +502,8 @@ export const ChatMessageComponent = memo(function ChatMessageComponent({ message
         ) : null}
       </div>
 
-      {/* Bubble */}
-      <div className={`min-w-0 max-w-[80%] ${isUser ? 'text-right' : ''}`}>
+      {/* Bubble — wider on mobile since no avatar */}
+      <div className={`min-w-0 max-w-[90%] sm:max-w-[80%] ${isUser ? 'text-right' : ''}`}>
         <div
           ref={bubbleRef}
           onMouseUp={updateSelectionAction}
